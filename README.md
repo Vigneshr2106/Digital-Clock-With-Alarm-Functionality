@@ -39,6 +39,7 @@ Buzzer: Rs.25
 ## CIRCUIT CONNECTION DIAGRAM
 
 
+![Screenshot 2024-05-29 192159](https://github.com/Vigneshr2106/Digital-Clock-With-Alarm-Functionality/assets/165415082/fd54fb14-5f6c-40a0-aaf5-a827b6160779)
 
 
 
