@@ -11,3 +11,22 @@ Digital clocks allow users to set alarms for specific times. These alarms can of
 To Create a digital clock using a RISC-V board that displays the current time and allows the user to set alarms. 
 The clock should read the time from a real-time clock (RTC) module and display it on an LCD. 
 It should also have an interrupt-driven system to trigger the alarm at the set time.
+
+## COMPONENTS REQUIRED
+VSD Squadron Mini Board
+LCD (to show the time)
+DS3231 RTC Module (for accurate time-keeping)
+Buzzer (for the alarm sound)
+Push Buttons (to set the time and alarm)
+Resistors (for current limiting with LEDs or display segments)
+Wires and Breadboard (for connections)
+
+## BILL OF MATERIALS(BOM)
+LCD Display: Rs.200
+Buttons: Rs.5 to 20
+Real-Time Clock (RTC) Module: Rs.130
+Buzzer: Rs.25
+
+## CIRCUIT CONNECTION DIAGRAM
+
+
