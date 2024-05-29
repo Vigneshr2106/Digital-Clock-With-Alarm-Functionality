@@ -40,7 +40,6 @@ Buzzer: Rs.25
 
 
 
-PIN ALLOCATION TABLE:
 
 
 
