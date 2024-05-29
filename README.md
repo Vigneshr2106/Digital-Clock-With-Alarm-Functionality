@@ -7,3 +7,7 @@ The most distinguishing feature of a digital clock is its display, which shows t
 Digital clocks allow users to set alarms for specific times. These alarms can often be customized with various sound options and volumes, and many modern digital clocks support multiple alarms for different times of the day.
 
 
+## OVERVIEW
+To Create a digital clock using a RISC-V board that displays the current time and allows the user to set alarms. 
+The clock should read the time from a real-time clock (RTC) module and display it on an LCD. 
+It should also have an interrupt-driven system to trigger the alarm at the set time.
