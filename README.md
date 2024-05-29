@@ -23,7 +23,6 @@ Buzzer (for the alarm sound)
 
 Push Buttons (to set the time and alarm)
 
-Resistors (for current limiting with LEDs or display segments)
 
 Wires and Breadboard (for connections)
 
