@@ -42,4 +42,7 @@ Buzzer: Rs.25
 
 
 
+## PIN CONNECTIONS
+
+![Screenshot 2024-05-29 193634](https://github.com/Vigneshr2106/Digital-Clock-With-Alarm-Functionality/assets/165415082/dfdb599f-e995-4b68-b729-878c97932bc7)
 
