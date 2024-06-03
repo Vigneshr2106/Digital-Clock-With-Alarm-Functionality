@@ -52,104 +52,164 @@ Buzzer: Rs.25
 ## CODE
 
 #define RTC_SDA PC1
+
 #define RTC_SCL PC2
+
 #define BUZZER PA1
+
 #define BUTTON PA2
 
 
 int hours = 0, minutes = 0, seconds = 0;
+
 int alarm_hours = 6, alarm_minutes = 30;
+
 bool alarm_active = true;
 
 
 int bcdToDec(uint8_t val) {
-    return (val / 16 * 10) + (val % 16);
+
+ return (val / 16 * 10) + (val % 16);
+    
 }
 
 void rtcStart() {
-    pinMode(RTC_SDA, OUTPUT);
-    digitalWrite(RTC_SDA, LOW);
-    digitalWrite(RTC_SCL, LOW);
+
+pinMode(RTC_SDA, OUTPUT);
+digitalWrite(RTC_SDA, LOW);
+digitalWrite(RTC_SCL, LOW);
 }
 
 void rtcStop() {
-    pinMode(RTC_SDA, OUTPUT);
-    digitalWrite(RTC_SDA, LOW);
-    digitalWrite(RTC_SCL, HIGH);
-    digitalWrite(RTC_SDA, HIGH);
+    
+pinMode(RTC_SDA, OUTPUT);
+
+digitalWrite(RTC_SDA, LOW);
+
+digitalWrite(RTC_SCL, HIGH);
+
+digitalWrite(RTC_SDA, HIGH);
 }
 
 void rtcWriteBit(bool bit) {
-    digitalWrite(RTC_SDA, bit);
-    digitalWrite(RTC_SCL, HIGH);
-    delayMicroseconds(1);
-    digitalWrite(RTC_SCL, LOW);
+digitalWrite(RTC_SDA, bit);
+    
+digitalWrite(RTC_SCL, HIGH);
+    
+delayMicroseconds(1);
+    
+digitalWrite(RTC_SCL, LOW);
 }
 
 bool rtcReadBit() {
-    pinMode(RTC_SDA, INPUT);
-    digitalWrite(RTC_SCL, HIGH);
-    delayMicroseconds(1);
-    bool bit = digitalRead(RTC_SDA);
-    digitalWrite(RTC_SCL, LOW);
-    return bit;
+ pinMode(RTC_SDA, INPUT);
+    
+digitalWrite(RTC_SCL, HIGH);
+
+delayMicroseconds(1);
+
+bool bit = digitalRead(RTC_SDA);
+
+digitalWrite(RTC_SCL, LOW);
+
+return bit;
 }
 
 void rtcWriteByte(uint8_t byte) {
-    for (int i = 0; i < 8; i++) rtcWriteBit(byte & (0x80 >> i));
-    pinMode(RTC_SDA, INPUT);
-    digitalWrite(RTC_SCL, HIGH);
-    delayMicroseconds(1);
-    digitalWrite(RTC_SCL, LOW);
+
+for (int i = 0; i < 8; i++) rtcWriteBit(byte & (0x80 >> i));
+
+pinMode(RTC_SDA, INPUT);
+    
+    
+digitalWrite(RTC_SCL, HIGH);
+    
+delayMicroseconds(1);
+    
+digitalWrite(RTC_SCL, LOW);
 }
 
 uint8_t rtcReadByte() {
-    uint8_t byte = 0;
-    for (int i = 0; i < 8; i++) byte |= (rtcReadBit() << (7 - i));
-    return byte;
+   
+uint8_t byte = 0;
+    
+for (int i = 0; i < 8; i++) byte |= (rtcReadBit() << (7 - i));
+    
+return byte;
 }
 
 void rtcWrite(uint8_t address, uint8_t data) {
-    rtcStart();
-    rtcWriteByte(0x68); // RTC I2C address + write bit
-    rtcWriteByte(address);
-    rtcWriteByte(data);
-    rtcStop();
+    
+rtcStart();
+    
+rtcWriteByte(0x68); // RTC I2C address + write bit
+    
+rtcWriteByte(address);
+
+rtcWriteByte(data);
+
+rtcStop();
 }
 
 uint8_t rtcRead(uint8_t address) {
-    rtcStart();
-    rtcWriteByte(0x68); // RTC I2C address + write bit
-    rtcWriteByte(address);
-    rtcStart();
-    rtcWriteByte(0x69); // RTC I2C address + read bit
-    uint8_t data = rtcReadByte();
-    rtcStop();
-    return data;
+    
+rtcStart();
+    
+rtcWriteByte(0x68); // RTC I2C address + write bit
+
+rtcWriteByte(address);
+    
+rtcStart();
+    
+rtcWriteByte(0x69); // RTC I2C address + read bit
+
+uint8_t data = rtcReadByte();
+
+rtcStop();
+    
+return data;
 }
 
 void rtcGetTime() {
-    uint8_t rawSeconds = rtcRead(0x00);
-    uint8_t rawMinutes = rtcRead(0x01);
-    uint8_t rawHours = rtcRead(0x02);
-    Serial.print("Raw RTC Values - Hours: ");
-    Serial.print(rawHours);
-    Serial.print(", Minutes: ");
-    Serial.print(rawMinutes);
-    Serial.print(", Seconds: ");
-    Serial.println(rawSeconds);
-    seconds = bcdToDec(rawSeconds);
-    minutes = bcdToDec(rawMinutes);
-    hours = bcdToDec(rawHours);
+    
+uint8_t rawSeconds = rtcRead(0x00);
+    
+uint8_t rawMinutes = rtcRead(0x01);
+
+uint8_t rawHours = rtcRead(0x02);
+
+Serial.print("Raw RTC Values - Hours: ");
+    
+Serial.print(rawHours);
+    
+Serial.print(", Minutes: ");
+    
+Serial.print(rawMinutes);
+    
+Serial.print(", Seconds: ");
+    
+Serial.println(rawSeconds);
+    
+seconds = bcdToDec(rawSeconds);
+    
+minutes = bcdToDec(rawMinutes);
+    
+hours = bcdToDec(rawHours);
 }
 
 void setup() {
-    Serial.begin(9600);
-    pinMode(BUZZER, OUTPUT);
-    pinMode(BUTTON, INPUT);
+    
+Serial.begin(9600);
+
+pinMode(BUZZER, OUTPUT);
+    
+pinMode(BUTTON, INPUT);
+
 Serial.println("Initializing RTC...");
 // Check if RTC is responding
-    uint8_t test = rtcRead(0x00);
+    
+    
+uint8_t test = rtcRead(0x00);
     if (test == 255) {
         Serial.println("Error: RTC not found or not responding.");
     } else {
@@ -198,6 +258,4 @@ if (hours == alarm_hours && minutes == alarm_minutes && seconds == 0 && alarm_ac
 
 
 ## Demo Video
-
-
 
