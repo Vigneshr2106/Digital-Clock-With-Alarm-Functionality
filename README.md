@@ -298,3 +298,5 @@ if (hours == alarm_hours && minutes == alarm_minutes && seconds == 0 && alarm_ac
 ## Demo Video
 
 
+https://github.com/Vigneshr2106/Digital-Clock-With-Alarm-Functionality/assets/165021886/01d60591-b670-43f5-b198-7104ecc43a32
+
