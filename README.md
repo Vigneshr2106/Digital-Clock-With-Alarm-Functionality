@@ -210,49 +210,87 @@ Serial.println("Initializing RTC...");
     
     
 uint8_t test = rtcRead(0x00);
-    if (test == 255) {
-        Serial.println("Error: RTC not found or not responding.");
+
+    
+  if (test == 255) {
+        
+   Serial.println("Error: RTC not found or not responding.");
     } else {
-        Serial.println("RTC initialized successfully.");
+       
+        
+   Serial.println("RTC initialized successfully.");
     }
+    
     rtcGetTime();
-    Serial.println("Time:");
-    Serial.print("Alarm: ");
-    if (alarm_hours < 10) Serial.print("0");
-    Serial.print(alarm_hours);
-    Serial.print(":");
-    if (alarm_minutes < 10) Serial.print("0");
-    Serial.println(alarm_minutes);
+    
+   Serial.println("Time:");
+    
+   Serial.print("Alarm: ");
+    
+   if (alarm_hours < 10) Serial.print("0");
+    
+   Serial.print(alarm_hours);
+    
+   Serial.print(":");
+    
+   if (alarm_minutes < 10) Serial.print("0");
+    
+   Serial.println(alarm_minutes);
 }
 
 void loop() {
-    rtcGetTime();
-    Serial.print("Current Time: ");
-    if (hours < 10) Serial.print("0");
-    Serial.print(hours);
-    Serial.print(":");
-    if (minutes < 10) Serial.print("0");
-    Serial.print(minutes);
-    Serial.print(":");
-    if (seconds < 10) Serial.print("0");
-    Serial.println(seconds);
+    
+   rtcGetTime();
+    
+   Serial.print("Current Time: ");
+   
+   if (hours < 10) Serial.print("0");
+    
+   Serial.print(hours);
+    
+   Serial.print(":");
+    
+   if (minutes < 10) Serial.print("0");
+    
+   Serial.print(minutes);
+   
+   Serial.print(":");
+   
+   if (seconds < 10) Serial.print("0");
+    
+   Serial.println(seconds);
+   
 if (hours == alarm_hours && minutes == alarm_minutes && seconds == 0 && alarm_active) {
-        for (int i = 0; i < 255; i++) {
-            analogWrite(BUZZER, i);
-            delay(10);
+        
+   for (int i = 0; i < 255; i++) {
+            
+   analogWrite(BUZZER, i);
+            
+   delay(10);
+   
         }
-        for (int i = 255; i > 0; i--) {
-            analogWrite(BUZZER, i);
-            delay(10);
+       
+   for (int i = 255; i > 0; i--) {
+           
+   analogWrite(BUZZER, i);
+            
+   delay(10);
         }
     } else {
-        analogWrite(BUZZER, 0);
+        
+        
+   analogWrite(BUZZER, 0);
     }
     if (digitalRead(BUTTON) == HIGH) {
-        alarm_active = false;
-        analogWrite(BUZZER, 0);
+    
+   
+  alarm_active = false;
+  
+   analogWrite(BUZZER, 0);
     }
-    delay(1000);
+    
+ delay(1000);
+ 
 }
 
 
