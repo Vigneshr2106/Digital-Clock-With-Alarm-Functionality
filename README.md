@@ -132,14 +132,12 @@ void rtcGetTime() {
     uint8_t rawSeconds = rtcRead(0x00);
     uint8_t rawMinutes = rtcRead(0x01);
     uint8_t rawHours = rtcRead(0x02);
-    
     Serial.print("Raw RTC Values - Hours: ");
     Serial.print(rawHours);
     Serial.print(", Minutes: ");
     Serial.print(rawMinutes);
     Serial.print(", Seconds: ");
     Serial.println(rawSeconds);
-
     seconds = bcdToDec(rawSeconds);
     minutes = bcdToDec(rawMinutes);
     hours = bcdToDec(rawHours);
@@ -149,17 +147,14 @@ void setup() {
     Serial.begin(9600);
     pinMode(BUZZER, OUTPUT);
     pinMode(BUTTON, INPUT);
-
-    Serial.println("Initializing RTC...");
-
-    // Check if RTC is responding
+Serial.println("Initializing RTC...");
+// Check if RTC is responding
     uint8_t test = rtcRead(0x00);
     if (test == 255) {
         Serial.println("Error: RTC not found or not responding.");
     } else {
         Serial.println("RTC initialized successfully.");
     }
-
     rtcGetTime();
     Serial.println("Time:");
     Serial.print("Alarm: ");
@@ -181,8 +176,7 @@ void loop() {
     Serial.print(":");
     if (seconds < 10) Serial.print("0");
     Serial.println(seconds);
-
-    if (hours == alarm_hours && minutes == alarm_minutes && seconds == 0 && alarm_active) {
+if (hours == alarm_hours && minutes == alarm_minutes && seconds == 0 && alarm_active) {
         for (int i = 0; i < 255; i++) {
             analogWrite(BUZZER, i);
             delay(10);
@@ -194,14 +188,16 @@ void loop() {
     } else {
         analogWrite(BUZZER, 0);
     }
-
     if (digitalRead(BUTTON) == HIGH) {
         alarm_active = false;
         analogWrite(BUZZER, 0);
     }
-
     delay(1000);
 }
 
 
+
 ## Demo Video
+
+
+
