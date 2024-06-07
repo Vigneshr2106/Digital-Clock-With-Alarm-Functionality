@@ -37,15 +37,16 @@ Buzzer: Rs.25
 
 ## CIRCUIT CONNECTION DIAGRAM
 
+![Screenshot 2024-06-07 212823](https://github.com/Vigneshr2106/Digital-Clock-With-Alarm-Functionality/assets/165415082/6e0b903d-fb12-4c0f-acb4-a40052feee56)
 
-![Screenshot 2024-06-03 232753](https://github.com/Vigneshr2106/Digital-Clock-With-Alarm-Functionality/assets/165415082/b5050735-9f3d-4fb6-b048-f5f1cec12666)
 
 
 
 
 ## PIN CONNECTIONS
 
-![Screenshot 2024-06-03 234106](https://github.com/Vigneshr2106/Digital-Clock-With-Alarm-Functionality/assets/165415082/6190bb20-322d-431a-b248-fc6108c0e7f5)
+![Screenshot 2024-06-07 214935](https://github.com/Vigneshr2106/Digital-Clock-With-Alarm-Functionality/assets/165415082/e6d533d5-e0b2-4407-9268-f37ea611b1f7)
+
 
 
 
