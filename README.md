@@ -15,11 +15,11 @@ It should also have an interrupt-driven system to trigger the alarm at the set t
 ## COMPONENTS REQUIRED
 VSD Squadron Mini Board
 
-LCD (to show the time)
+O LED Display (to show the time)
 
-DS3231 RTC Module (for accurate time-keeping)
 
 Buzzer (for the alarm sound)
+
 
 Push Buttons (to set the time and alarm)
 
@@ -27,13 +27,13 @@ Push Buttons (to set the time and alarm)
 Wires and Breadboard (for connections)
 
 ## BILL OF MATERIALS(BOM)
-LCD Display: Rs.200
+O LED Display: Rs.270
 
 Buttons: Rs.5 to 20
 
-Real-Time Clock (RTC) Module: Rs.130
-
 Buzzer: Rs.25
+
+Wires and Breadboard: Rs.200
 
 ## CIRCUIT CONNECTION DIAGRAM
 
