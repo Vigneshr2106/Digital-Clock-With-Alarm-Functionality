@@ -37,15 +37,16 @@ Wires and Breadboard: Rs.200
 
 ## CIRCUIT CONNECTION DIAGRAM
 
+![Screenshot 2024-06-07 212823](https://github.com/Vigneshr2106/Digital-Clock-With-Alarm-Functionality/assets/165415082/e36d8ed4-38fa-40a9-8660-173346e137e5)
 
-![Screenshot 2024-06-03 232753](https://github.com/Vigneshr2106/Digital-Clock-With-Alarm-Functionality/assets/165415082/b5050735-9f3d-4fb6-b048-f5f1cec12666)
 
 
 
 
 ## PIN CONNECTIONS
 
-![Screenshot 2024-06-03 234106](https://github.com/Vigneshr2106/Digital-Clock-With-Alarm-Functionality/assets/165415082/6190bb20-322d-431a-b248-fc6108c0e7f5)
+![Screenshot 2024-06-07 214935](https://github.com/Vigneshr2106/Digital-Clock-With-Alarm-Functionality/assets/165415082/223ec815-8eef-4d82-9a2d-4840fc03cd8b)
+
 
 
 
