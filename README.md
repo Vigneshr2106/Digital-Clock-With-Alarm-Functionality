@@ -244,5 +244,7 @@ int main(void)
 ## Demo Video
 
 
+https://github.com/Vigneshr2106/Digital-Clock-With-Alarm-Functionality/assets/165021886/2b1cbfa0-0de4-4219-aa33-eb12c8ded15d
+
 
 
