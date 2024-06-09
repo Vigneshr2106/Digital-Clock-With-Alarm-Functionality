@@ -52,248 +52,178 @@ Wires and Breadboard: Rs.200
 
 ## CODE
 
-#define RTC_SDA PC1
+#include "debug.h"
 
-#define RTC_SCL PC2
+#include "ssd1306.h"
 
-#define BUZZER PA1
+#include "ch32v00x.h"
 
-#define BUTTON PA2
-
-
-int hours = 0, minutes = 0, seconds = 0;
-
-int alarm_hours = 6, alarm_minutes = 30;
-
-bool alarm_active = true;
-
-
-int bcdToDec(uint8_t val) {
-
- return (val / 16 * 10) + (val % 16);
+void GPIO_Config(void)
+{
+   GPIO_InitTypeDef GPIO_InitStructure = {0};
     
-}
-
-void rtcStart() {
-
-pinMode(RTC_SDA, OUTPUT);
-digitalWrite(RTC_SDA, LOW);
-digitalWrite(RTC_SCL, LOW);
-}
-
-void rtcStop() {
+   RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD, ENABLE);
     
-pinMode(RTC_SDA, OUTPUT);
+   RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
 
-digitalWrite(RTC_SDA, LOW);
-
-digitalWrite(RTC_SCL, HIGH);
-
-digitalWrite(RTC_SDA, HIGH);
-}
-
-void rtcWriteBit(bool bit) {
-digitalWrite(RTC_SDA, bit);
-    
-digitalWrite(RTC_SCL, HIGH);
-    
-delayMicroseconds(1);
-    
-digitalWrite(RTC_SCL, LOW);
-}
-
-bool rtcReadBit() {
- pinMode(RTC_SDA, INPUT);
-    
-digitalWrite(RTC_SCL, HIGH);
-
-delayMicroseconds(1);
-
-bool bit = digitalRead(RTC_SDA);
-
-digitalWrite(RTC_SCL, LOW);
-
-return bit;
-}
-
-void rtcWriteByte(uint8_t byte) {
-
-for (int i = 0; i < 8; i++) rtcWriteBit(byte & (0x80 >> i));
-
-pinMode(RTC_SDA, INPUT);
-    
-    
-digitalWrite(RTC_SCL, HIGH);
-    
-delayMicroseconds(1);
-    
-digitalWrite(RTC_SCL, LOW);
-}
-
-uint8_t rtcReadByte() {
+   // Light pin configuration
    
-uint8_t byte = 0;
+   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2;
+   
+   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
     
-for (int i = 0; i < 8; i++) byte |= (rtcReadBit() << (7 - i));
+   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
     
-return byte;
+   GPIO_Init(GPIOD, &GPIO_InitStructure);
 }
 
-void rtcWrite(uint8_t address, uint8_t data) {
-    
-rtcStart();
-    
-rtcWriteByte(0x68); // RTC I2C address + write bit
-    
-rtcWriteByte(address);
+// Define a structure to hold the time
 
-rtcWriteByte(data);
+typedef struct {
 
-rtcStop();
+   int hours;
+   
+   int minutes;
+   
+   int seconds;
+   
+} 
+
+Time;
+
+Time currentTime = {0, 0, 0};
+
+Time alarmTime = {0, 0, 10}; 
+
+// Example alarm time at 06:30:00
+
+void Start()
+{
+    OLED_GotoXY(1, 1);
+    
+   OLED_Puts("DIGITAL", &Font_11x18, 1);
+    
+   OLED_GotoXY(1, 30);
+    
+   OLED_Puts("CLOCK", &Font_11x18, 1);
+    
+   OLED_UpdateScreen();
+    
+   Delay_Ms(1000);
 }
 
-uint8_t rtcRead(uint8_t address) {
-    
-rtcStart();
-    
-rtcWriteByte(0x68); // RTC I2C address + write bit
 
-rtcWriteByte(address);
-    
-rtcStart();
-    
-rtcWriteByte(0x69); // RTC I2C address + read bit
+void Buzzer(void)
 
-uint8_t data = rtcReadByte();
-
-rtcStop();
+{
+   uint32_t elapsedTime = 0;
     
-return data;
-}
-
-void rtcGetTime() {
-    
-uint8_t rawSeconds = rtcRead(0x00);
-    
-uint8_t rawMinutes = rtcRead(0x01);
-
-uint8_t rawHours = rtcRead(0x02);
-
-Serial.print("Raw RTC Values - Hours: ");
-    
-Serial.print(rawHours);
-    
-Serial.print(", Minutes: ");
-    
-Serial.print(rawMinutes);
-    
-Serial.print(", Seconds: ");
-    
-Serial.println(rawSeconds);
-    
-seconds = bcdToDec(rawSeconds);
-    
-minutes = bcdToDec(rawMinutes);
-    
-hours = bcdToDec(rawHours);
-}
-
-void setup() {
-    
-Serial.begin(9600);
-
-pinMode(BUZZER, OUTPUT);
-    
-pinMode(BUTTON, INPUT);
-
-Serial.println("Initializing RTC...");
-// Check if RTC is responding
-    
-    
-uint8_t test = rtcRead(0x00);
-
-    
-  if (test == 255) {
+   while (elapsedTime < 5000)
+    {
+        GPIO_WriteBit(GPIOD, GPIO_Pin_2, Bit_SET);
         
-   Serial.println("Error: RTC not found or not responding.");
-    } else {
-       
+   Delay_Ms(500);
         
-   Serial.println("RTC initialized successfully.");
+   GPIO_WriteBit(GPIOD, GPIO_Pin_2, Bit_RESET);
+        
+   Delay_Ms(500);
+        
+   elapsedTime += 1000;
+        
+   }
+}
+
+
+void UpdateClockDisplay(Time time)
+
+{
+    char buffer[9];  // Buffer to hold the time string in HH:MM:SS format
+    
+   snprintf(buffer, sizeof(buffer), "%02d:%02d:%02d", time.hours, time.minutes, time.seconds);
+    
+   OLED_GotoXY(1, 1);
+    
+   OLED_Puts(buffer, &Font_11x18, 1);
+    
+   OLED_UpdateScreen();
+    
+   Delay_Ms(1000);
+}
+
+void CheckAlarm(Time time, Time alarm)
+
+{
+
+   if (time.hours == alarm.hours && time.minutes == alarm.minutes && time.seconds == alarm.seconds) {
+   
+   OLED_GotoXY(1, 30);
+   
+   OLED_Puts("ALARM!", &Font_11x18, 1);
+   
+   OLED_UpdateScreen();
+   
+   Buzzer();
+    
+   }
+    
+}
+
+void IncrementTime(Time *time)
+
+{
+    time->seconds++;
+    
+   if (time->seconds >= 60) {
+    
+   time->seconds = 0;
+        
+   time->minutes++;
+    
     }
     
-    rtcGetTime();
-    
-   Serial.println("Time:");
-    
-   Serial.print("Alarm: ");
-    
-   if (alarm_hours < 10) Serial.print("0");
-    
-   Serial.print(alarm_hours);
-    
-   Serial.print(":");
-    
-   if (alarm_minutes < 10) Serial.print("0");
-    
-   Serial.println(alarm_minutes);
-}
-
-void loop() {
-    
-   rtcGetTime();
-    
-   Serial.print("Current Time: ");
-   
-   if (hours < 10) Serial.print("0");
-    
-   Serial.print(hours);
-    
-   Serial.print(":");
-    
-   if (minutes < 10) Serial.print("0");
-    
-   Serial.print(minutes);
-   
-   Serial.print(":");
-   
-   if (seconds < 10) Serial.print("0");
-    
-   Serial.println(seconds);
-   
-if (hours == alarm_hours && minutes == alarm_minutes && seconds == 0 && alarm_active) {
-        
-   for (int i = 0; i < 255; i++) {
-            
-   analogWrite(BUZZER, i);
-            
-   delay(10);
-   
-        }
-       
-   for (int i = 255; i > 0; i--) {
-           
-   analogWrite(BUZZER, i);
-            
-   delay(10);
-        }
-    } else {
-        
-        
-   analogWrite(BUZZER, 0);
-    }
-    if (digitalRead(BUTTON) == HIGH) {
-    
-   
-  alarm_active = false;
+  if (time->minutes >= 60) {
   
-   analogWrite(BUZZER, 0);
+   time->minutes = 0;
+   
+   time->hours++;
+   
     }
     
- delay(1000);
- 
+  if (time->hours >= 24) {
+    
+  time->hours = 0;
+  
+   }
+    
 }
 
+int main(void)
+
+{
+    SystemCoreClockUpdate();
+    
+   Delay_Init();
+   
+   OLED_Init();
+   
+   GPIO_Config();
+   
+   Start();
+
+   while (1)
+   
+   {
+    
+   UpdateClockDisplay(currentTime);
+        
+   CheckAlarm(currentTime, alarmTime);
+   
+   IncrementTime(&currentTime);
+   
+   Delay_Ms(500);  // Wait for 1 second
+    
+   }
+}
 
 
 ## Demo Video
