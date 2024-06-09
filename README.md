@@ -61,6 +61,7 @@ Wires and Breadboard: Rs.200
 void GPIO_Config(void)
 
 {
+   
    GPIO_InitTypeDef GPIO_InitStructure = {0};
     
    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD, ENABLE);
@@ -76,6 +77,7 @@ void GPIO_Config(void)
    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
     
    GPIO_Init(GPIOD, &GPIO_InitStructure);
+   
 }
 
 // Define a structure to hold the time
@@ -101,6 +103,7 @@ Time alarmTime = {0, 0, 10};
 // Example alarm time at 06:30:00
 
 void Start()
+
 {
     OLED_GotoXY(1, 1);
     
@@ -113,6 +116,7 @@ void Start()
    OLED_UpdateScreen();
     
    Delay_Ms(1000);
+   
 }
 
 
@@ -152,6 +156,7 @@ void UpdateClockDisplay(Time time)
    OLED_UpdateScreen();
     
    Delay_Ms(1000);
+   
 }
 
 void CheckAlarm(Time time, Time alarm)
