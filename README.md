@@ -98,7 +98,7 @@ Time;
 
 Time currentTime = {0, 0, 0};
 
-Time alarmTime = {6, 30, 00}; 
+Time alarmTime = {6, 30, 0}; 
 
 // Example alarm time at 06:30:00
 
