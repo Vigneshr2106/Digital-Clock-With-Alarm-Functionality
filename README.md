@@ -59,6 +59,7 @@ Wires and Breadboard: Rs.200
 #include "ch32v00x.h"
 
 void GPIO_Config(void)
+
 {
    GPIO_InitTypeDef GPIO_InitStructure = {0};
     
@@ -79,7 +80,9 @@ void GPIO_Config(void)
 
 // Define a structure to hold the time
 
-typedef struct {
+typedef struct 
+
+{
 
    int hours;
    
@@ -119,7 +122,8 @@ void Buzzer(void)
    uint32_t elapsedTime = 0;
     
    while (elapsedTime < 5000)
-    {
+   
+   {
         GPIO_WriteBit(GPIOD, GPIO_Pin_2, Bit_SET);
         
    Delay_Ms(500);
@@ -154,7 +158,9 @@ void CheckAlarm(Time time, Time alarm)
 
 {
 
-   if (time.hours == alarm.hours && time.minutes == alarm.minutes && time.seconds == alarm.seconds) {
+   if (time.hours == alarm.hours && time.minutes == alarm.minutes && time.seconds == alarm.seconds) 
+   
+   {
    
    OLED_GotoXY(1, 30);
    
@@ -173,23 +179,29 @@ void IncrementTime(Time *time)
 {
     time->seconds++;
     
-   if (time->seconds >= 60) {
+   if (time->seconds >= 60) 
+   
+   {
     
    time->seconds = 0;
         
    time->minutes++;
     
-    }
+   }
     
-  if (time->minutes >= 60) {
+  if (time->minutes >= 60) 
+  
+  {
   
    time->minutes = 0;
    
    time->hours++;
    
-    }
+   }
     
-  if (time->hours >= 24) {
+  if (time->hours >= 24) 
+  
+  {
     
   time->hours = 0;
   
