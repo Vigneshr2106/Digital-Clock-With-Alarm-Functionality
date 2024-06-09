@@ -9,11 +9,12 @@ Digital clocks allow users to set alarms for specific times. These alarms can of
 
 ## OVERVIEW
 To Create a digital clock using a RISC-V board that displays the current time and allows the user to set alarms. 
-The clock should read the time from a real-time clock (RTC) module and display it on an LCD. 
+OLED (Organic Light Emitting Diodes) is used for dispalying the time.
 It should also have an interrupt-driven system to trigger the alarm at the set time.
 
 ## COMPONENTS REQUIRED
 VSD Squadron Mini Board
+
 
 O LED Display (to show the time)
 
@@ -21,15 +22,10 @@ O LED Display (to show the time)
 Buzzer (for the alarm sound)
 
 
-Push Buttons (to set the time and alarm)
-
-
 Wires and Breadboard (for connections)
 
 ## BILL OF MATERIALS(BOM)
 O LED Display: Rs.270
-
-Buttons: Rs.5 to 20
 
 Buzzer: Rs.25
 
@@ -37,7 +33,8 @@ Wires and Breadboard: Rs.200
 
 ## CIRCUIT CONNECTION DIAGRAM
 
-![Screenshot 2024-06-07 212823](https://github.com/Vigneshr2106/Digital-Clock-With-Alarm-Functionality/assets/165415082/e36d8ed4-38fa-40a9-8660-173346e137e5)
+![Screenshot 2024-06-09 220821](https://github.com/Vigneshr2106/Digital-Clock-With-Alarm-Functionality/assets/165415082/3f3ea4b2-b7a0-4178-ad43-fdf4f122de72)
+
 
 
 
@@ -45,7 +42,8 @@ Wires and Breadboard: Rs.200
 
 ## PIN CONNECTIONS
 
-![Screenshot 2024-06-07 214935](https://github.com/Vigneshr2106/Digital-Clock-With-Alarm-Functionality/assets/165415082/223ec815-8eef-4d82-9a2d-4840fc03cd8b)
+![Screenshot 2024-06-09 220751](https://github.com/Vigneshr2106/Digital-Clock-With-Alarm-Functionality/assets/165415082/8f653f88-bfa0-4bd3-83e9-7c6006136e17)
+
 
 
 
@@ -246,5 +244,5 @@ int main(void)
 ## Demo Video
 
 
-https://github.com/Vigneshr2106/Digital-Clock-With-Alarm-Functionality/assets/165021886/01d60591-b670-43f5-b198-7104ecc43a32
+
 
