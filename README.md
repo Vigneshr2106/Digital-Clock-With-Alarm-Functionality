@@ -248,3 +248,181 @@ https://github.com/Vigneshr2106/Digital-Clock-With-Alarm-Functionality/assets/16
 
 
 
+## Fault Injection
+
+Fault injection in software is a technique used to test the robustness and reliability of software by intentionally introducing errors or faults. 
+
+For a digital clock with alarm functionality implemented on an Arduino using Tinkercad, we can simulate fault injection by randomly altering the time or alarm settings during execution.
+
+By simulating fault injection, we can test how robust our digital clock with alarm functionality is against unexpected errors.
+
+
+## Code
+
+#include <LiquidCrystal.h>
+
+#include <Wire.h>
+
+// Initialize the LCD library with the numbers of the interface pins
+
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+
+struct Time 
+{
+  int hours;
+  
+  int minutes;
+  
+  int seconds;
+}
+;
+
+Time currentTime = {0, 0, 0};
+
+Time alarmTime = {0, 0, 10};
+
+// Example alarm time
+
+bool alarmTriggered = false;
+
+void updateClockDisplay(Time time);
+
+void checkAlarm(Time time, Time alarm);
+
+void incrementTime(Time &time);
+
+void buzzer();
+
+void faultInjection(Time &time);
+
+void setup() 
+{
+  lcd.begin(16, 2);  // Set up the LCD's number of columns and rows
+  
+  updateClockDisplay(currentTime);
+  
+}
+
+void loop() 
+{
+  incrementTime(currentTime);
+  
+  updateClockDisplay(currentTime);
+  
+  checkAlarm(currentTime, alarmTime);
+
+  // Introduce fault injection at random intervals
+  
+  if (random(10) == 0) {  // 10% chance of fault injection each loop iteration
+  
+   faultInjection(currentTime);
+  
+  }
+  
+  delay(1000);  // Wait for 1 second
+
+}
+
+void updateClockDisplay(Time time) 
+
+{
+  lcd.setCursor(0, 0);
+  
+  lcd.print("Time: ");
+  
+  if (time.hours < 10) lcd.print('0');
+  
+  lcd.print(time.hours);
+  
+  lcd.print(':');
+  
+  if (time.minutes < 10) lcd.print('0');
+  
+  lcd.print(time.minutes);
+  
+  lcd.print(':');
+  
+  if (time.seconds < 10) lcd.print('0');
+  
+  lcd.print(time.seconds);
+
+}
+
+void checkAlarm(Time time, Time alarm) 
+
+{
+  if (time.hours == alarm.hours && time.minutes == alarm.minutes && time.seconds == alarm.seconds && !alarmTriggered) 
+  
+  {
+    lcd.setCursor(0, 1);
+    
+   lcd.print("ALARM!");
+   
+   buzzer();
+   
+   alarmTriggered = true;
+  
+  }
+}
+
+void incrementTime(Time &time) 
+{
+  time.seconds++;
+  
+  if (time.seconds >= 60) 
+  {
+    time.seconds = 0;
+    
+   time.minutes++;
+  
+  }
+  if (time.minutes >= 60) 
+  
+  {
+    time.minutes = 0;
+    
+   time.hours++;
+  
+  }
+  
+  if (time.hours >= 24) 
+  {
+    time.hours = 0;
+  }
+}
+
+void buzzer() 
+{
+  for (int i = 0; i < 5; i++) 
+  {
+    digitalWrite(8, HIGH);
+    
+   delay(500);
+   
+   digitalWrite(8, LOW);
+   
+   delay(500);
+  }
+}
+
+void faultInjection(Time &time) 
+{
+  // Randomly corrupt the time value
+  
+  time.seconds = random(60);
+  
+  time.minutes = random(60);
+  
+  time.hours = random(24);
+  
+  lcd.setCursor(0, 1);
+  
+  lcd.print("FAULT INJECTED");
+}
+
+## Video of Fault Injection
+
+
+
+
+
