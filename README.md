@@ -422,7 +422,7 @@ void faultInjection(Time &time)
 
 ## Video of Fault Injection
 
-
+https://github.com/Vigneshr2106/Digital-Clock-With-Alarm-Functionality/assets/165021886/1eaffbf8-d685-46e1-a3f6-df438ea8dd1c
 
 
 
