@@ -248,7 +248,7 @@ https://github.com/Vigneshr2106/Digital-Clock-With-Alarm-Functionality/assets/16
 
 
 
-## Fault Injection
+## Fault Injection Using Arduino
 
 Fault injection in software is a technique used to test the robustness and reliability of software by intentionally introducing errors or faults. 
 
@@ -371,7 +371,8 @@ void incrementTime(Time &time)
   
   if (time.seconds >= 60) 
   {
-    time.seconds = 0;
+    
+   time.seconds = 0;
     
    time.minutes++;
   
@@ -379,7 +380,8 @@ void incrementTime(Time &time)
   if (time.minutes >= 60) 
   
   {
-    time.minutes = 0;
+    
+   time.minutes = 0;
     
    time.hours++;
   
@@ -387,26 +389,32 @@ void incrementTime(Time &time)
   
   if (time.hours >= 24) 
   {
-    time.hours = 0;
+    
+   time.hours = 0;
+  
   }
 }
 
 void buzzer() 
 {
   for (int i = 0; i < 5; i++) 
+  
   {
-    digitalWrite(8, HIGH);
+    
+   digitalWrite(8, HIGH);
     
    delay(500);
    
    digitalWrite(8, LOW);
    
    delay(500);
+  
   }
 }
 
 void faultInjection(Time &time) 
 {
+ 
   // Randomly corrupt the time value
   
   time.seconds = random(60);
@@ -423,6 +431,135 @@ void faultInjection(Time &time)
 ## Video of Fault Injection
 
 https://github.com/Vigneshr2106/Digital-Clock-With-Alarm-Functionality/assets/165021886/1eaffbf8-d685-46e1-a3f6-df438ea8dd1c
+
+## Fault Injection Using OLED Display
+
+#include "debug.h"
+
+#include "ssd1306.h"
+
+#include "ch32v00x.h"
+
+void GPIO_Config(void)
+{
+
+   GPIO_InitTypeDef GPIO_InitStructure = {0};
+   
+   RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD, ENABLE);
+   
+   RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
+
+    
+   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2;
+   
+   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+   
+   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+   
+   GPIO_Init(GPIOD, &GPIO_InitStructure);
+}
+
+// Define a structure to hold the time
+typedef struct
+
+{
+    int hours;
+    
+   int minutes
+    
+   int seconds;
+} 
+
+Time;
+
+Time currentTime = {0, 0, 0};
+Time alarmTime = {6, 30, 0}; // Example alarm time at 06:30:00
+
+void Start()
+{ 
+    OLED_GotoXY(1, 1);
+    OLED_Puts("DIGITAL", &Font_11x18, 1);
+    OLED_GotoXY(1, 30);
+    OLED_Puts("CLOCK", &Font_11x18, 1);
+    OLED_UpdateScreen();
+    Delay_Ms(1000);
+}
+
+void Buzzer(void)
+{ 
+    uint32_t elapsedTime = 0;
+    while (elapsedTime < 5000)
+    { 
+        GPIO_WriteBit(GPIOD, GPIO_Pin_2, Bit_SET);
+        Delay_Ms(500);
+        GPIO_WriteBit(GPIOD, GPIO_Pin_2, Bit_RESET);
+        Delay_Ms(500);
+        elapsedTime += 1000;
+    } 
+}
+
+void UpdateClockDisplay(Time time)
+{ 
+    char buffer[9]; // Buffer to hold the time string in HH:MM:SS format
+    snprintf(buffer, sizeof(buffer), "%02d:%02d:%02d", time.hours, time.minutes, time.seconds);
+    OLED_GotoXY(1, 1);
+    OLED_Puts(buffer, &Font_11x18, 1);
+    OLED_UpdateScreen();
+    Delay_Ms(1000);
+}
+
+void CheckAlarm(Time time, Time alarm)
+{
+    if (time.hours == alarm.hours && time.minutes == alarm.minutes && time.seconds == alarm.seconds)
+    {
+        OLED_GotoXY(1, 30);
+        OLED_Puts("ALARM!", &Font_11x18, 1);
+        OLED_UpdateScreen();
+        Buzzer();
+    }
+}
+
+void IncrementTime(Time *time)
+{ 
+    time->seconds++;
+    if (time->seconds >= 60)
+    {
+        time->seconds = 0;
+        // Injected fault: The following line is commented out, so minutes never increment.
+        // time->minutes++;
+    }
+    if (time->minutes >= 60)
+    {
+        time->minutes = 0;
+        time->hours++;
+    }
+    if (time->hours >= 24)
+    {
+        time->hours = 0;
+    }
+}
+
+int main(void)
+{ 
+    SystemCoreClockUpdate();
+    Delay_Init();
+    OLED_Init();
+    GPIO_Config();
+    Start();
+
+ while (1)
+    {
+   UpdateClockDisplay(currentTime);
+   
+  CheckAlarm(currentTime, alarmTime);
+  
+ IncrementTime(&currentTime);
+ 
+Delay_Ms(500); // Wait for 1 second
+    }
+}
+
+
 
 
 
