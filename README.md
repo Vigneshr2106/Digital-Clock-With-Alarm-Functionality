@@ -860,3 +860,5 @@ int main(void)
 
 ## Security Video
 
+https://github.com/Vigneshr2106/Digital-Clock-With-Alarm-Functionality/assets/165021886/4144110f-17bd-4bf5-a6f3-e432f2cdc777
+
