@@ -487,8 +487,7 @@ void Start()
 { 
     OLED_GotoXY(1, 1);
     
- OLED_Puts("DIGITAL", &Font_11x18,
- 1);
+ OLED_Puts("DIGITAL", &Font_11x18,1);
  
  OLED_GotoXY(1, 30);
  
@@ -518,27 +517,27 @@ GPIO_WriteBit(GPIOD,GPIO_Pin_2,Bit_RESET);
 Delay_Ms(500);
 
 elapsedTime += 1000;
-    } 
+
+   } 
 }
 
 void UpdateClockDisplay(Time time)
 
 { 
-    char buffer[9]; // Buffer to hold the time string in HH:MM:SS format
+   char buffer[9]; // Buffer to hold the time string in HH:MM:SS format
     
    snprintf(buffer, sizeof(buffer), "%02d:%02d:%02d", time.hours, time.minutes, time.seconds);
 
    OLED_GotoXY(1, 1);
    
-OLED_Puts(buffer, &Font_11x18, 1);
+  OLED_Puts(buffer, &Font_11x18, 1);
    
    OLED_UpdateScreen();
    
    Delay_Ms(1000);
 }
 
-void CheckAlarm(Time time, Time
-alarm)
+void CheckAlarm(Time time, Timealarm)
 
 {
     if (time.hours == alarm.hours
@@ -552,7 +551,8 @@ OLED_Puts("ALARM!",&Font_11x18,1);
  OLED_UpdateScreen();
  
 Buzzer();
-    }
+
+   }
 }
 
 void IncrementTime(Time *time)
@@ -570,15 +570,20 @@ void IncrementTime(Time *time)
     }
     
  if (time->minutes >= 60)
-    {
+ 
+ {
+
 time->minutes = 0;
         
  time->hours++;
-   } 
+   
+   }
+   
    
    if (time->hours >= 24)
     
    {
+   
    time->hours = 0;
     }
 }
