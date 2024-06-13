@@ -630,11 +630,11 @@ https://github.com/Vigneshr2106/Digital-Clock-With-Alarm-Functionality/assets/16
 ## Security(Protecting From Fault Injection)
 
 
-### Explanation:
-Redundant Computation in IncrementTime,The IncrementTime function now performs the time increment twice and compares the results to detect any inconsistencies.
-Error Handling If a discrepancy is detected, the time is reset to a known safe state (00:00:00), and further protective measures can be added, such as logging the error.
-
-By incorporating these techniques, the system becomes more resilient to fault injection attacks, making it more difficult for an attacker to disrupt the normal operation of the clock.
+### Explanation
+To protect or shield the code from the fault injected in the IncrementTime function, where the line to increment minutes is commented out, we can implement a mechanism to detect this anomaly and correct it. One effective way is to introduce a watchdog function that checks the time consistency and makes the necessary corrections if it detects any inconsistency.
+the code is with a WatchdogCheck function that ensures time is incrementing correctly.
+The WatchdogCheck function is called within the main loop after the IncrementTime function to ensure any anomalies caused by the fault are corrected.
+By implementing the WatchdogCheck function, we add an additional layer of reliability to the system, ensuring that the clock increments correctly even if faults are injected into the IncrementTime function.
 
 ## Code
 
