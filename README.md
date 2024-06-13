@@ -434,6 +434,12 @@ https://github.com/Vigneshr2106/Digital-Clock-With-Alarm-Functionality/assets/16
 
 ## Fault Injection Using OLED Display
 
+Here is the code with an injected fault. The fault I have introduced is in the IncrementTime function 
+where I have intentionally skipped the incrementation of minutes when seconds exceed 60
+leading to a continuous loop in seconds without proper time progression.
+
+
+
 #include "debug.h"
 
 #include "ssd1306.h"
@@ -618,6 +624,7 @@ Delay_Ms(500); // Wait for 1 second
 
 ## Video of Fault injection 
 
+https://github.com/Vigneshr2106/Digital-Clock-With-Alarm-Functionality/assets/165021886/65add440-5ba8-4e47-bb43-1e2af4076b4e
 
 
 
